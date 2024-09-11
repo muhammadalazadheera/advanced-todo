@@ -9,9 +9,9 @@
         href="https://res.cloudinary.com/dqv4l1mkj/image/upload/v1724854253/fav_uyhtz2.png">
     <link href="https://fonts.maateen.me/adorsho-lipi/font.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/countdown.css">
+    <link rel="stylesheet" id="rmode">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/settings.css">
-    <link rel="stylesheet" href="assets/css/colors.css">
 </head>
 
 <body id="settings-page">
@@ -25,7 +25,7 @@
         <div class="dashboard">
             <div class="greetings">
                 <div class="greetings-text">
-                    <h1>Hello <span class="name">Al Azad Heera</span></h1>
+                    <h1>Hello <span id="name" class="name"></span></h1>
                     <p>Here Are The Settings You Can Modify</p>
                 </div>
             </div>
@@ -130,7 +130,7 @@
                         <td class="menus" align="right">
                             <ul>
                                 <li>
-                                    <input type="checkbox" id="r-toggle" class="toggleCheckbox" />
+                                    <input type="checkbox" id="r-toggle" class="toggleCheckbox" onclick="updateDarkMode()" />
                                     <label for="r-toggle" class='toggleContainer'>
                                         <div>ON</div>
                                         <div>OFF</div>

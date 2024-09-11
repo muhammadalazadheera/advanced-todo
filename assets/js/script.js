@@ -3,6 +3,24 @@ $(document).ready(function () {
     loadDate();
     loadWeather();
     loadQuote();
+
+    let readingMode = $('#rmode');
+
+    settings = JSON.parse(localStorage.getItem('settings'));
+
+    let name = $('#name');
+    name.html(settings.name);
+
+    if (!settings){
+        readingMode.attr('href','assets/css/light.css');
+    }else if(settings.darkMode == true){
+        readingMode.attr('href','assets/css/dark.css');
+    }
+    else{
+        readingMode.attr('href','assets/css/light.css');
+    }
+
+
 })
 
 function loadBongabdo() {

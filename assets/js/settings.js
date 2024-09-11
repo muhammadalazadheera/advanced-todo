@@ -108,6 +108,8 @@ function updateName() {
             darkMode: settings.darkMode
         }
         localStorage.setItem('settings', JSON.stringify(updatedSettings));
+        let updatedName = $('#name');
+        updatedName.html(name);
     } else {
         console.error('No settings found in localStorage');
     }
@@ -298,7 +300,8 @@ function updateQuotes() {
 
 function updateDarkMode() {
     let settings = JSON.parse(localStorage.getItem('settings'));
-    let updateSettigns;
+        let readingMode = $('#rmode');
+        let updateSettigns;
     if(settings.darkMode == true) {
         updateSettigns = {
             name: settings.name,
@@ -310,6 +313,8 @@ function updateDarkMode() {
             quotes: settings.quotes,
             darkMode: false
         }
+        readingMode.attr('href','assets/css/dark.css');
+        location.reload();
     }else{
         updateSettigns = {
             name: settings.name,
@@ -321,6 +326,8 @@ function updateDarkMode() {
             quotes: settings.quotes,
             darkMode: true
         }
+        readingMode.attr('href','assets/css/light.css');
+        location.reload();
     }
     
     settings = localStorage.setItem('settings', JSON.stringify(updateSettigns));

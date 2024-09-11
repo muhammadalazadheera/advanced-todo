@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://fonts.maateen.me/adorsho-lipi/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/countdown.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <div id="edit-form">
+        <div class="edit-inputs">
+            <div id="close-button">X</div>
+            <p id="task-name"></p>
+            <div id="edit-input-box">
+                <input type="text" id="task-name-input">
+                <input type="hidden" id="task-index">
+            </div>
+        </div>
+    </div>
+    <div id="left-sidebar">
+        <div class="name-box">
+            <h1>Private</h1>
+        </div>
+
+        <nav>
+            <ul id="category-list">
+                <li onclick="filterTasks(false, null)">
+                    <span class="icon-img"><img src="assets/images/icons/icons8-assignment-return-64.png" alt="">
+                        <p>Incomplete</p>
+                    </span>
+
+                    <span id="incomplete-task" class="task-counter"></span>
+                </li>
+
+                <li onclick="filterTasks(true, null)">
+                    <span class="icon-img"><img src="assets/images/icons/icons8-checked-48.png" alt="">
+                        <p>Completed</p>
+                    </span>
+
+                    <span id="complete-task" class="task-counter"></span>
+                </li>
+
+                <li class="li-active" onclick="loadTasks()">
+                    <span class="icon-img"><img src="assets/images/icons/icons8-all-64.png" alt="">
+                        <p>All</p>
+                    </span>
+
+                    <span id="all-task" class="task-counter"></span>
+                </li>
+
+                <li onclick="filterTasks(false, 'null')">
+                    <span class="icon-img"><img src="assets/images/icons/icons8-category-64.png" alt="">
+                        <p>Uncategorised</p>
+                    </span>
+
+                    <span id="uncategorised-task" class="task-counter"></span>
+                </li>
+
+                <li>
+                    <input type="text" id="newCategory" class="add-new-item" placeholder="+ Create New List">
+                    <input type="file" id="category-img">
+                    <img class="add-new-category-img" id="input-tirgger" src="assets/images/icons/icons8-img-64.png" alt="">
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <section id="main">
+        <div class="sidebar-hidden"></div>
+        <div class="dashboard">
+            <div class="greetings">
+                <div class="greetings-text">
+                    <h1>Hello <span class="name">Al Azad Heera</span></h1>
+                    <p>Here Are The Tasks You Need To Complete</p>
+                </div>
+            </div>
+            <div class="task-table">
+                <table id="task-table">
+                </table>
+            </div>
+            <form action="#" id="add-new-task">
+                <input id="new-task-input" type="text" class="add-new-item" placeholder="+ Add New Task">
+                <select name="" id="task-categories">
+                    <option disabled selected>Select Category</option>
+                </select>
+            </form>
+        </div>
+        <div class="sidebar-hidden">
+        </div>
+    </section>
+    <div id="right-sidebar">
+        <div id="weather-display"></div>
+        <div class="dates">
+            <div id="date-gregorian"></div>
+            <div id="date-hijri"></div>
+            <div id="date-bongabdo"></div>
+        </div>
+        <div id="count-down-wrapper">
+            <div id="countdown">
+                <div class="time">
+                    <div id="days"></div>
+                    <span>D</span>
+                </div>
+                <div class="time">
+                    <div id="hours"></div>
+                    <span>H</span>
+                </div>
+                <div class="time">
+                    <div id="minutes"></div>
+                    <span>M</span>
+                </div>
+                <div class="time">
+                    <div id="seconds"></div>
+                    <span>S</span>
+                </div>
+            </div>
+        </div>
+        <div id="quote"></div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://resume.nuhil.net/bangla-calendar/jquery.bongabdo.min.js"></script>
+
+    <script src="assets/js/countdown.js"></script>
+
+    <script type="text/javascript">
+        $('#date-bongabdo').bongabdo({
+            showSeason: true,
+            format: "DD MM, YY (SS)"
+        });
+    </script>
+
+    <script>
+        const date = new Date();
+        const day = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        const formattedDate = `${day}-${month}-${year}`;
+
+        $(document).ready(function () {
+            let apiUrl = "https://api.aladhan.com/v1/gToH/" + formattedDate;
+
+            $.getJSON(apiUrl, function (response) {
+                if (response.code === 200) {
+                    let hijri_day = response.data.hijri.day;
+                    let hijri_month = response.data.hijri.month.en;
+                    let hijri_year = response.data.hijri.year;
+
+                    let day = response.data.gregorian.day;
+                    let month = response.data.gregorian.month.en;
+                    let year = response.data.gregorian.year;
+
+                    $('#date-gregorian').text(day + ' ' + month + ' ' + year);
+                    $('#date-hijri').text(hijri_day + ' ' + hijri_month + ' ' + hijri_year);
+                } else {
+                    $('#date-display').text("Failed to fetch the date.");
+                }
+            }).fail(function () {
+                $('#date-display').text("Error in fetching data.");
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var apiUrl = "https://api.openweathermap.org/data/2.5/weather?lat=26.10834&lon=88.83409&units=metric&appid=01d9f2d66b5fb9c863aa86b5cb001cd2";
+
+            $.getJSON(apiUrl, function (response) {
+                if (response.cod === 200) {
+                    let description = response.weather[0].description;
+                    let temperature = response.main.temp;
+                    let feels_like = response.main.feels_like;
+                    let humidity = response.main.humidity;
+                    let icon = response.weather[0].icon;
+
+                    let weatherInfo = `
+                    <table>
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <img src="https://openweathermap.org/img/wn/${icon}.png" alt="Weather icon"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="value">${description}</td>
+                            </tr>
+                            <tr>
+                                <td class="value">${temperature}°C</td>
+                            </tr>
+                            <tr>
+                                <td class="value">${feels_like}°C (Feels Like)</td>
+                            </tr>
+                            <tr>
+                                <td class="value">${humidity}% (Humidity)</td>
+                            </tr>
+                        </table>
+                `;
+                    $('#weather-display').html(weatherInfo);
+                } else {
+                    $('#weather-display').text("Failed to fetch weather data.");
+                }
+            }).fail(function () {
+                $('#weather-display').text("Error in fetching data.");
+            });
+        });
+    </script>
+
+    <script>
+        let file = 'assets/quotes.json';
+        let random_number = Math.floor((Math.random() * 100) + 1);
+        $(document).ready(function () {
+            $.getJSON(file, function (response) {
+                $('#quote').text(response[random_number].quote)
+            })
+        })
+    </script>
+
+<script src="assets/js/script.js"></script>
+<script src="assets/js/tasks.js"></script>
+</body>
+
+</html>

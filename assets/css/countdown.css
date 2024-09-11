@@ -1,0 +1,45 @@
+#countdown {
+    display: flex;
+}
+
+.time {
+    font-size: 30px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.time span {
+    display: block;
+    font-size: 0.5em;
+    margin-top: 5px;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-in-out forwards;
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

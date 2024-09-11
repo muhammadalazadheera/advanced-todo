@@ -1,0 +1,8 @@
+1. Name
+2. Weather
+3. Bangla Date
+4. Gregorian Date
+5. Hijri Date
+6. Countdown
+7. Quotes
+8. Light/Dark mode

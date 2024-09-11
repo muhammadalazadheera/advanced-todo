@@ -1,5 +1,8 @@
 // Load tasks from local storage on page load
-document.addEventListener("DOMContentLoaded", loadTasks);
+$(document).ready(function(){
+    loadTasks();
+    loadCategory();
+})
 
 function showForm(id) {
     $('#edit-form').css('display', 'flex');
@@ -118,11 +121,9 @@ function deleteTask(id) {
 function editTask(id, taskName) {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    // Find the index of the task with the matching id
     const taskIndex = tasks.findIndex(task => task.id == id);
 
-    if (taskIndex !== -1) { // Ensure the task exists
-        // Update the task's properties
+    if (taskIndex !== -1) {
         tasks[taskIndex] = {
             id: tasks[taskIndex].id,
             name: taskName,
@@ -130,13 +131,10 @@ function editTask(id, taskName) {
             isComplete: tasks[taskIndex].isComplete
         };
 
-        // Save the updated tasks array back to localStorage
         localStorage.setItem("tasks", JSON.stringify(tasks));
 
-        // Reload the tasks (assumed to refresh the UI)
         loadTasks(); 
 
-        // Hide the edit form
         $('#edit-form').hide();
     } else {
         console.error(`Task with id ${id} not found`);
@@ -170,6 +168,7 @@ function filterTasks(isComplete, category) {
 
 
     filteredTasks.forEach((task, index) => {
+        let category = categories.filter(category => category.id == task.category);
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td style="width:5%">
@@ -180,8 +179,8 @@ function filterTasks(isComplete, category) {
             <td class="goal-text" style="width:60%">${task.name}</td>
             <td class="time-line-text" style="width:30%" align="right">
                 <span class="due-date">
-                    ${categories[task.category] ? 
-                        `<img class="cat-img" src="${categories[task.category].image}" alt="${categories[task.category].name}"> ${categories[task.category].name}` 
+                    ${category ? 
+                        `<img class="cat-img" src="${category[0].image}" alt="${category[0].name}"> ${category[0].name}` 
                         : 
                         `<img class="cat-img" src="assets/images/icons/icons8-category-64.png" alt="Uncategorised"> Uncategorised`
                     }
@@ -211,8 +210,84 @@ function countTasks() {
     $('#complete-task').text(completedTasks);
     $('#incomplete-task').text(incompleteTasks);
     $('#uncategorised-task').text(uncategorisedTasks);
-
 }
 
+
+$('#add-new-task').keypress(function(e){
+    if(e.key === 'Enter'){
+        e.preventDefault();
+        addTask();
+    }
+})
+
+$('#task-name-input').keypress(function(e){
+    if(e.key === 'Enter'){
+        e.preventDefault();
+        let index = $('#task-index').val()
+        let task = $('#task-name-input').val()
+        editTask(index, task)
+    }
+})
+
+$('#input-tirgger').click(function(){
+    $('#category-img').click();
+})
+
+
+
+document.getElementById('category-img').addEventListener('change', function(){
+    const reader = new FileReader();
+    reader.addEventListener('load', function(){
+        imageUrl = reader.result;
+    })
+    reader.readAsDataURL(this.files[0]);
+});
+
+$('#newCategory').keypress(function(e){
+    let imageUrl = '';
+    let category = $('#newCategory').val();
+    let uid = (new Date().getTime()).toString(36) + new Date().getUTCMilliseconds();
+
+    if(e.key === 'Enter'){
+        if(category) {
+            let categories = JSON.parse(localStorage.getItem("categories")) || [];
+            categories.push({id: uid,name: category, image: imageUrl});
+            localStorage.setItem("categories", JSON.stringify(categories));
+            loadCategory();
+        }
+    }
+})
+
+function loadCategory(){
+    let categories = JSON.parse(localStorage.getItem('categories')) || [];
+    let categoryList = $('#category-list');
+    let taskCategories = $('#task-categories');
+    $('#newCategory').val(null);
+    $('li.custom-category').remove();
+    taskCategories.find('option:not(:first)').remove()
+    categories.forEach((category, index) => {
+        let newCategory = $(`
+            <li class="custom-category" onclick="filterTasks(null, '${category.id}')">
+                <span class="icon-img"><img src="${category.image}" alt="">
+                    <p>${category.name}</p>
+                </span>
+
+                <span onclick="deleteCategory('${category.id}')" class="task-counter"><img src="assets/images/icons/icons8-trash-48.png"></span>
+            </li>
+        `)
+        categoryList.find('li:last').before(newCategory);
+
+        let option = $(`<option value="${category.id}">${category.name}</option>`);
+
+        taskCategories.find('option:first').after(option);
+    });
+}
+
+function deleteCategory(id) {
+    let categories = JSON.parse(localStorage.getItem("categories")) || [];
+    categories = categories.filter(category => category.id !== id);
+    localStorage.setItem("categories", JSON.stringify(categories));
+    loadCategory();
+}
 
 

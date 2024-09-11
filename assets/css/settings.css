@@ -1,0 +1,116 @@
+/*========================================
+|                                        |
+            Settings Page
+|                                        |
+=========================================*/
+@import url('https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap');
+.toggleContainer {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: fit-content;
+    height: 30px;
+    border: 3px solid #343434;
+    border-radius: 20px;
+    background: #343434;
+    font-weight: bold;
+    color: #343434;
+    cursor: pointer;
+  }
+  .toggleContainer::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0%;
+    border-radius:20px;
+    background: rgb(0, 133, 0);
+    transition: all 0.3s;
+  }
+  .toggleCheckbox:checked + .toggleContainer::before {
+     left: 50%;
+  }
+  .toggleContainer div {
+    padding: 5px;
+    text-align: center;
+    z-index: 1;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .toggleCheckbox {
+    display: none;
+  }
+  .toggleCheckbox:checked + .toggleContainer div:first-child{
+    color: white;
+    transition: color 0.3s;
+  }
+
+  .toggleCheckbox:checked + .toggleContainer::before{
+    background: rgb(201, 68, 86);
+    transition: all 0.3s;
+  }
+
+  .toggleCheckbox:checked + .toggleContainer div:last-child{
+    color: #ffffff;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox + .toggleContainer div:first-child{
+    color: #ffffff;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox + .toggleContainer div:last-child{
+    color: white;
+    transition: color 0.3s;
+  }
+
+#left-sidebar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menus ul {
+    height: 35px;
+}
+
+.menus input[type="text"] {
+    border: none;
+    background-color: #f5f5f5;
+    padding: 10px;
+    width: 250px;
+    font-size: 16px;
+    text-align: right;
+    border-radius: 7px;
+}
+
+.menus input[type="text"]:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px;
+}
+
+#left-sidebar .name-box{
+    font-family: "Protest Guerrilla", sans-serif;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    font-size: 25px;
+
+    width: 100%;
+    height: 300px;
+    background: url(../images/settings.png);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center center;
+}
+
+#left-sidebar .name-box h1{
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+    background: #ffffff;
+    animation: stretch 2s  0s infinite alternate;
+}
+
+@keyframes stretch {
+    from {letter-spacing: 5px;}
+    to {letter-spacing: 10px;}
+  }

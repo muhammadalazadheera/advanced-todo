@@ -11,15 +11,14 @@ $(document).ready(function () {
     let name = $('#name');
     name.html(settings.name);
 
-    if (!settings){
-        readingMode.attr('href','assets/css/light.css');
-    }else if(settings.darkMode == true){
-        readingMode.attr('href','assets/css/dark.css');
+    if (!settings) {
+        readingMode.attr('href', 'assets/css/light.css');
+    } else if (settings.darkMode == true) {
+        readingMode.attr('href', 'assets/css/dark.css');
     }
-    else{
-        readingMode.attr('href','assets/css/light.css');
+    else {
+        readingMode.attr('href', 'assets/css/light.css');
     }
-
 })
 
 function loadBongabdo() {
@@ -29,37 +28,36 @@ function loadBongabdo() {
     });
 }
 
-function loadDate(){
+function loadDate() {
     const date = new Date();
-        const day = date.getDate();
-        const month = date.getMonth();
-        const year = date.getFullYear();
-        const formattedDate = `${day}-${month}-${year}`;
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
 
-        $(document).ready(function () {
-            let apiUrl = "https://api.aladhan.com/v1/gToH/" + formattedDate;
+    $(document).ready(function () {
+        let apiUrl = "https://api.aladhan.com/v1/gToH/" + formattedDate;
 
-            $.getJSON(apiUrl, function (response) {
-                if (response.code === 200) {
-                    let hijri_day = response.data.hijri.day;
-                    let hijri_month = response.data.hijri.month.en;
-                    let hijri_year = response.data.hijri.year;
+        $.getJSON(apiUrl, function (response) {
+            if (response.code === 200) {
+                let hijri_day = response.data.hijri.day;
+                let hijri_month = response.data.hijri.month.en;
+                let hijri_year = response.data.hijri.year;
 
-                    let day = response.data.gregorian.day;
-                    let month = response.data.gregorian.month.en;
-                    let year = response.data.gregorian.year;
+                let day = response.data.gregorian.day;
+                let month = response.data.gregorian.month.en;
+                let year = response.data.gregorian.year;
 
-                    $('#date-gregorian').text(day + ' ' + month + ' ' + year);
-                    $('#date-hijri').text(hijri_day + ' ' + hijri_month + ' ' + hijri_year);
-                } else {
-                    $('#date-display').text("Failed to fetch the date.");
-                }
-            }).fail(function () {
-                $('#date-display').text("Error in fetching data.");
-            });
+                $('#date-gregorian').text(day + ' ' + month + ' ' + year);
+                $('#date-hijri').text(hijri_day + ' ' + hijri_month + ' ' + hijri_year);
+            } else {
+                $('#date-display').text("Failed to fetch the date.");
+            }
+        }).fail(function () {
+            $('#date-display').text("Error in fetching data.");
         });
+    });
 }
-
 
 function loadWeather() {
     $(document).ready(function () {
@@ -106,10 +104,24 @@ function loadWeather() {
 
 function loadQuote() {
     let file = 'assets/quotes.json';
-        let random_number = Math.floor((Math.random() * 100) + 1);
-        $(document).ready(function () {
-            $.getJSON(file, function (response) {
-                $('#quote').text(response[random_number].quote)
-            })
+    let random_number = Math.floor((Math.random() * 100) + 1);
+    $(document).ready(function () {
+        $.getJSON(file, function (response) {
+            $('#quote').text(response[random_number].quote)
         })
+    })
+}
+
+function addActiveClass() {
+    var ul = document.querySelector('ul');
+    ul.addEventListener('click', function (e) {
+        var li = e.target.closest('li');
+        if (li && ul.contains(li)) {
+            var elems = document.querySelectorAll(".li-active");
+            elems.forEach(function (el) {
+                el.classList.remove("li-active");
+            });
+            li.classList.add("li-active");
+        }
+    });
 }

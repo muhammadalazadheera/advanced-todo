@@ -1,5 +1,5 @@
 // Load tasks from local storage on page load
-$(document).ready(function(){
+$(document).ready(function () {
     loadTasks();
     loadCategory();
 })
@@ -11,8 +11,8 @@ function showForm(id) {
     const task = tasks.find(task => task.id == id);
 
     if (task) {
-        $('#task-name').text(task.name); 
-        $('#task-name-input').val(task.name); 
+        $('#task-name').text(task.name);
+        $('#task-name-input').val(task.name);
         $('#task-index').val(id);
     } else {
         console.error(`Task with id ${id} not found`);
@@ -72,11 +72,11 @@ function loadTasks() {
             <td class="goal-text" style="width:60%">${task.name}</td>
             <td class="time-line-text" style="width:30%" align="right">
                 <span class="due-date">
-                    ${task.category !== null ? 
-                        `<img class="cat-img" src="${category[0].image}" alt="${category[0].name}"> ${category[0].name}` 
-                        : 
-                        `<img class="cat-img" src="assets/images/icons/icons8-category-64.png" alt="Uncategorised"> Uncategorised`
-                    }
+                    ${task.category !== null ?
+                `<img class="cat-img" src="${category[0].image}" alt="${category[0].name}"> ${category[0].name}`
+                :
+                `<img class="cat-img" src="assets/images/icons/icons8-category-64.png" alt="Uncategorised"> Uncategorised`
+            }
                 </span>
             </td>
             <td class="menus" style="width:5%" align="right">
@@ -91,6 +91,7 @@ function loadTasks() {
 
     });
     countTasks()
+    addActiveClass();
 }
 
 function addTask() {
@@ -101,10 +102,10 @@ function addTask() {
     if (task) {
         let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         let uid = (new Date().getTime()).toString(36) + new Date().getUTCMilliseconds();
-        tasks.push({id: uid, name: task, category: category, isComplete: false});
+        tasks.push({ id: uid, name: task, category: category, isComplete: false });
         localStorage.setItem("tasks", JSON.stringify(tasks));
         taskInput.value = ''; // Clear input field
-        $("#task-categories option:first").attr('selected','selected');
+        $("#task-categories option:first").attr('selected', 'selected');
         loadTasks(); // Reload the list
     } else {
         alert("Please enter a task.");
@@ -133,7 +134,7 @@ function editTask(id, taskName) {
 
         localStorage.setItem("tasks", JSON.stringify(tasks));
 
-        loadTasks(); 
+        loadTasks();
 
         $('#edit-form').hide();
     } else {
@@ -144,7 +145,7 @@ function editTask(id, taskName) {
 
 function markAsDone(id) {
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks[id] = {name: tasks[id].name, category: tasks[id].category, isComplete: tasks[id].isComplete ? false : true}
+    tasks[id] = { name: tasks[id].name, category: tasks[id].category, isComplete: tasks[id].isComplete ? false : true }
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
@@ -152,13 +153,13 @@ function filterTasks(isComplete, category) {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     let filteredTasks = [];
 
-    if(isComplete && category == null) {
+    if (isComplete && category == null) {
         filteredTasks = tasks.filter(task => task.isComplete === true);
-    }else if(!isComplete && category === null){
+    } else if (!isComplete && category === null) {
         filteredTasks = tasks.filter(task => task.isComplete === false);
-    }else if(isComplete == null && category !== null){
+    } else if (isComplete == null && category !== null) {
         filteredTasks = tasks.filter(task => task.category == category);
-    }else{
+    } else {
         filteredTasks = tasks.filter(task => task.category === null || task.category === "null");
     }
 
@@ -179,11 +180,11 @@ function filterTasks(isComplete, category) {
             <td class="goal-text" style="width:60%">${task.name}</td>
             <td class="time-line-text" style="width:30%" align="right">
                 <span class="due-date">
-                    ${category ? 
-                        `<img class="cat-img" src="${category[0].image}" alt="${category[0].name}"> ${category[0].name}` 
-                        : 
-                        `<img class="cat-img" src="assets/images/icons/icons8-category-64.png" alt="Uncategorised"> Uncategorised`
-                    }
+                    ${category ?
+                `<img class="cat-img" src="${category[0].image}" alt="${category[0].name}"> ${category[0].name}`
+                :
+                `<img class="cat-img" src="assets/images/icons/icons8-category-64.png" alt="Uncategorised"> Uncategorised`
+            }
                 </span>
             </td>
             <td class="menus" style="width:5%" align="right">
@@ -197,6 +198,7 @@ function filterTasks(isComplete, category) {
         taskList.appendChild(tr);
     });
     countTasks()
+    addActiveClass()
 }
 
 function countTasks() {
@@ -213,15 +215,15 @@ function countTasks() {
 }
 
 
-$('#add-new-task').keypress(function(e){
-    if(e.key === 'Enter'){
+$('#add-new-task').keypress(function (e) {
+    if (e.key === 'Enter') {
         e.preventDefault();
         addTask();
     }
 })
 
-$('#task-name-input').keypress(function(e){
-    if(e.key === 'Enter'){
+$('#task-name-input').keypress(function (e) {
+    if (e.key === 'Enter') {
         e.preventDefault();
         let index = $('#task-index').val()
         let task = $('#task-name-input').val()
@@ -229,36 +231,36 @@ $('#task-name-input').keypress(function(e){
     }
 })
 
-$('#input-tirgger').click(function(){
+$('#input-tirgger').click(function () {
     $('#category-img').click();
 })
 
 let imageUrl = '';
 
-document.getElementById('category-img').addEventListener('change', function(){
+document.getElementById('category-img').addEventListener('change', function () {
     const reader = new FileReader();
-    reader.addEventListener('load', function(){
+    reader.addEventListener('load', function () {
         imageUrl = reader.result;
     })
     reader.readAsDataURL(this.files[0]);
 });
 
-$('#newCategory').keypress(function(e){
-    
+$('#newCategory').keypress(function (e) {
+
     let category = $('#newCategory').val();
     let uid = (new Date().getTime()).toString(36) + new Date().getUTCMilliseconds();
 
-    if(e.key === 'Enter'){
-        if(category) {
+    if (e.key === 'Enter') {
+        if (category) {
             let categories = JSON.parse(localStorage.getItem("categories")) || [];
-            categories.push({id: uid,name: category, image: imageUrl});
+            categories.push({ id: uid, name: category, image: imageUrl });
             localStorage.setItem("categories", JSON.stringify(categories));
             loadCategory();
         }
     }
 })
 
-function loadCategory(){
+function loadCategory() {
     let categories = JSON.parse(localStorage.getItem('categories')) || [];
     let categoryList = $('#category-list');
     let taskCategories = $('#task-categories');

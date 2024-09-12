@@ -242,6 +242,12 @@ nav ul li {
     cursor: pointer;
 }
 
+nav ul li:hover {
+    background-color: var(--secondary);
+    color: var(--text-color);
+    transition: all .4s ease;
+}
+
 .li-active {
     background-color: var(--secondary);
     color: var(--text-color);

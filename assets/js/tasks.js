@@ -233,7 +233,7 @@ $('#input-tirgger').click(function(){
     $('#category-img').click();
 })
 
-
+let imageUrl = '';
 
 document.getElementById('category-img').addEventListener('change', function(){
     const reader = new FileReader();
@@ -244,7 +244,7 @@ document.getElementById('category-img').addEventListener('change', function(){
 });
 
 $('#newCategory').keypress(function(e){
-    let imageUrl = '';
+    
     let category = $('#newCategory').val();
     let uid = (new Date().getTime()).toString(36) + new Date().getUTCMilliseconds();
 

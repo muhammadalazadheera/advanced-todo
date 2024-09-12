@@ -20,7 +20,6 @@ $(document).ready(function () {
         readingMode.attr('href','assets/css/light.css');
     }
 
-
 })
 
 function loadBongabdo() {

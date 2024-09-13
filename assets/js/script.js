@@ -8,9 +8,6 @@ $(document).ready(function () {
 
     settings = JSON.parse(localStorage.getItem('settings'));
 
-    let name = $('#name');
-    name.html(settings.name);
-
     if (!settings) {
         readingMode.attr('href', 'assets/css/light.css');
     } else if (settings.darkMode == true) {

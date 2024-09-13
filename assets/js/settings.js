@@ -1,6 +1,6 @@
 $(document).ready(function(){
     let settings;
-    settings = localStorage.getItem('settings');
+    settings = JSON.parse(localStorage.getItem('settings'));
     if (!settings) {
         // Initialize default settings if none exist in localStorage
         settings = {
@@ -15,10 +15,10 @@ $(document).ready(function(){
         };
         localStorage.setItem('settings', JSON.stringify(settings));
         $('#name-input').val('Guest');
+        $('#name').html('Guest');
     } else {
-        // Parse the settings from localStorage and update the input
-        settings = JSON.parse(settings);
         $('#name-input').val(settings.name);
+        $('#name').html(settings.name);
     }
 
     let weatherSwitch = $('#weather-toggle');

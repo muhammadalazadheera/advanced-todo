@@ -66,7 +66,7 @@ function loadTasks() {
         tr.innerHTML = `
             <td style="width:5%">
                 <div class="checkbox-wrapper-13">
-                    <input id="c1-13-${index}" type="checkbox" onchange="markAsDone(${index})" ${task.isComplete ? 'checked' : ''}>
+                    <input id="c1-13-${index}" type="checkbox" onchange="markAsDone('${task.id}')" ${task.isComplete ? 'checked' : ''}>
                 </div>
             </td>
             <td class="goal-text" style="width:60%">${task.name}</td>
@@ -88,7 +88,6 @@ function loadTasks() {
             </td>
         `;
         taskList.appendChild(tr);
-
     });
     countTasks()
     addActiveClass();
@@ -98,7 +97,6 @@ function addTask() {
     const taskInput = document.getElementById("new-task-input");
     const task = taskInput.value;
     const category = $('#task-categories').val();
-
     if (task) {
         let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         let uid = (new Date().getTime()).toString(36) + new Date().getUTCMilliseconds();
@@ -121,9 +119,7 @@ function deleteTask(id) {
 
 function editTask(id, taskName) {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
     const taskIndex = tasks.findIndex(task => task.id == id);
-
     if (taskIndex !== -1) {
         tasks[taskIndex] = {
             id: tasks[taskIndex].id,
@@ -142,11 +138,32 @@ function editTask(id, taskName) {
     }
 }
 
-
 function markAsDone(id) {
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks[id] = { name: tasks[id].name, category: tasks[id].category, isComplete: tasks[id].isComplete ? false : true }
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const taskIndex = tasks.findIndex(task => task.id == id);
+    console.log(tasks[taskIndex])
+    if (taskIndex !== -1) {
+        if (tasks[taskIndex].isComplete == true) {
+            tasks[taskIndex] = {
+                id: tasks[taskIndex].id,
+                name: tasks[taskIndex].name,
+                category: tasks[taskIndex].category,
+                isComplete: false
+            };
+        } else {
+            tasks[taskIndex] = {
+                id: tasks[taskIndex].id,
+                name: tasks[taskIndex].name,
+                category: tasks[taskIndex].category,
+                isComplete: true
+            };
+        }
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        loadTasks();
+        $('#edit-form').hide();
+    } else {
+        console.error(`Task with id ${id} not found`);
+    }
 }
 
 function filterTasks(isComplete, category) {

@@ -407,7 +407,6 @@ nav ul li:last-child {
 
 .menu{
     background-color: var(--secondary);
-    color: var(--text-color);
     border-radius: 5px;
     padding: 5px 10px;
     height: 15px;

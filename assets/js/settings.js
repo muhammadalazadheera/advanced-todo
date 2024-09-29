@@ -1,6 +1,9 @@
 $(document).ready(function(){
+
     let settings;
+
     settings = JSON.parse(localStorage.getItem('settings'));
+
     if (!settings) {
         // Initialize default settings if none exist in localStorage
         settings = {
@@ -35,6 +38,7 @@ $(document).ready(function(){
     let bdateContainer = $('#date-bongabdo');
     let gdateContainer = $('#date-gregorian');
     let hdateContainer = $('#date-hijri')
+
 
     if(settings.weather == true) {
         weatherSwitch.prop('checked', false);
@@ -91,6 +95,16 @@ $(document).ready(function(){
     }
 
 });
+
+/////////////////////////
+
+const channel = new BroadcastChannel('page-refresh');
+
+channel.onmessage = (event) => {
+    if (event.data === 'refresh') {
+        location.reload();
+    }
+};
 
 
 function updateName() {
@@ -314,7 +328,6 @@ function updateDarkMode() {
             darkMode: false
         }
         readingMode.attr('href','assets/css/dark.css');
-        location.reload();
     }else{
         updateSettigns = {
             name: settings.name,
@@ -327,8 +340,7 @@ function updateDarkMode() {
             darkMode: true
         }
         readingMode.attr('href','assets/css/light.css');
-        location.reload();
     }
-    
     settings = localStorage.setItem('settings', JSON.stringify(updateSettigns));
+    channel.postMessage('refresh');
 }

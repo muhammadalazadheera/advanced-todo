@@ -342,5 +342,6 @@ function updateDarkMode() {
         readingMode.attr('href','assets/css/light.css');
     }
     settings = localStorage.setItem('settings', JSON.stringify(updateSettigns));
+    location.reload()
     channel.postMessage('refresh');
 }
